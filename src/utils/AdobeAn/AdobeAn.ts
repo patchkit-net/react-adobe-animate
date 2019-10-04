@@ -1,37 +1,41 @@
 import createjs from "createjs-module";
 
-interface Library {
-  properties: {
-    id: string,
-    width: number,
-    height: number,
-    fps: number,
-    color: string,
-    opacity: number,
-    manifest: any[],
-    preloads: any[]
-  };
+export interface LibraryProperties {
+  id: string,
+  width: number,
+  height: number,
+  fps: number,
+  color: string,
+  opacity: number,
+  manifest: any[],
+  preloads: any[]
+}
+
+export interface Library {
+  properties: LibraryProperties
 
   [key: string]: any
 }
 
-interface Composition {
+export interface SpriteSheets {
+  [key: string]: createjs.SpriteSheet
+}
+
+export interface Composition {
   getImages: () => HTMLImageElement[]
   getStage: () => any
-  getSpriteSheet: () => {
-    [key: string]: {
-      prototype: createjs.SpriteSheet
-    }
-  }
+  getSpriteSheet: () => SpriteSheets
   getLibrary: () => Library
 }
 
-interface IAdobeAn {
+export interface IAdobeAn {
   getComposition: (compositionId: string) => Composition;
+  compositionLoaded: (id: string) => void;
   compositions: {
     [compositionId: string]: Composition
   }
 }
+
 
 const { AdobeAn }: { AdobeAn: IAdobeAn } = (window as any);
 
