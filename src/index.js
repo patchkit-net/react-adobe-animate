@@ -12,7 +12,7 @@ export default class AnimateCC extends React.Component {
     const b = parseInt(color.substring(5, 7), 16);
 
     return `rgba(${r}, ${g}, ${b}, ${opacity})`;
-  }
+  };
 
   static propTypes = {
     animationName: PropTypes.string.isRequired,
@@ -20,14 +20,14 @@ export default class AnimateCC extends React.Component {
     getAnimationObject: PropTypes.func,
     paused: PropTypes.bool,
     style: PropTypes.object,
-  }
+  };
 
   static defaultProps = {
     getAnimationObject: () => {},
     composition: null,
     paused: false,
     style: {},
-  }
+  };
 
   dimensions = {
     // config
@@ -40,7 +40,7 @@ export default class AnimateCC extends React.Component {
     lastW: 1,
     lastH: 1,
     lastS: 1,
-  }
+  };
 
   constructor() {
     super();
@@ -91,9 +91,9 @@ export default class AnimateCC extends React.Component {
     window.addEventListener("resize", this.resizeCanvas);
     this.resizeCanvas();
     this.startAnimation();
-  }
+  };
 
-  getComposition = (searchedName) => {
+  getComposition = searchedName => {
     const { composition } = this.props;
 
     if (composition !== null) {
@@ -102,11 +102,11 @@ export default class AnimateCC extends React.Component {
 
     const compositionIds = Object.keys(AdobeAn.compositions);
 
-    const [foundComposition] = compositionIds.filter((id) => {
+    const [foundComposition] = compositionIds.filter(id => {
       const library = AdobeAn.compositions[id].getLibrary();
       const props = Object.keys(library);
 
-      const independent = props.filter((prop) => {
+      const independent = props.filter(prop => {
         if (library[prop].prototype
             && library[prop].prototype.mode
             && library[prop].prototype.mode === "independent") {
@@ -120,7 +120,7 @@ export default class AnimateCC extends React.Component {
     });
 
     return foundComposition;
-  }
+  };
 
   loadLibs = () => {
     ({ AdobeAn } = window);
@@ -131,7 +131,7 @@ export default class AnimateCC extends React.Component {
     if (!CreateJs) {
       throw new Error("createjs dependency not found");
     }
-  }
+  };
 
   initAdobeAn = () => {
     const { animationName } = this.props;
@@ -154,15 +154,15 @@ export default class AnimateCC extends React.Component {
     }
 
     const loader = new CreateJs.LoadQueue(false);
-    loader.addEventListener("fileload", (evt) => { this.handleFileLoad(evt, comp); });
-    loader.addEventListener("complete", (evt) => { this.handleComplete(evt, comp); });
+    loader.addEventListener("fileload", evt => { this.handleFileLoad(evt, comp); });
+    loader.addEventListener("complete", evt => { this.handleComplete(evt, comp); });
     lib = comp.getLibrary();
     loader.loadManifest(lib.properties.manifest);
 
     if (lib.properties.manifest.filter(({ type }) => type === "image").length === 0) {
       this.handleComplete(null, comp);
     }
-  }
+  };
 
   handleComplete = (evt, comp) => {
     const { animationName, paused, getAnimationObject } = this.props;
@@ -191,12 +191,12 @@ export default class AnimateCC extends React.Component {
 
     this.stage = stage;
     this.setState({ properties: lib.properties }, this.onAnimationReady);
-  }
+  };
 
   handleFileLoad = (evt, comp) => {
     const images = comp.getImages();
     if (evt && (evt.item.type === "image")) { images[evt.item.id] = evt.result; }
-  }
+  };
 
   // Registers the "tick" event listener.
   startAnimation = () => {
@@ -207,12 +207,12 @@ export default class AnimateCC extends React.Component {
     this.stage.addChild(this.lib);
     CreateJs.Ticker.setFPS(properties.fps);
     CreateJs.Ticker.addEventListener("tick", this.stage);
-  }
+  };
 
   // Unregisters the "tick" event listener.
   stopAnimation = () => {
     CreateJs.Ticker.removeEventListener("tick", this.stage);
-  }
+  };
 
   // Code to support hidpi screens and responsive scaling.
   resizeCanvas = () => {
@@ -249,7 +249,7 @@ export default class AnimateCC extends React.Component {
     this.stage.tickOnUpdate = false;
     this.stage.update();
     this.stage.tickOnUpdate = true;
-  }
+  };
 
   render() {
     const {
@@ -265,9 +265,9 @@ export default class AnimateCC extends React.Component {
     if (Object.keys(properties).length === 0) {
       return (
         <div>
-          <div ref={(el) => { this.animationContainer = el; }}>
-            <canvas ref={(el) => { this.canvas = el; }} />
-            <div ref={(el) => { this.domOverlayContainer = el; }} />
+          <div ref={el => { this.animationContainer = el; }}>
+            <canvas ref={el => { this.canvas = el; }} />
+            <div ref={el => { this.domOverlayContainer = el; }} />
           </div>
         </div>
       );
@@ -278,16 +278,17 @@ export default class AnimateCC extends React.Component {
     return (
       <div>
         <div
-          ref={(el) => { this.animationContainer = el; }}
+          ref={el => { this.animationContainer = el; }}
           style={{
             width: "100%",
             height: "100%",
             ...additionalStyles,
           }}
+          // eslint-disable-next-line react/jsx-props-no-spreading
           {...props}
         >
           <canvas
-            ref={(el) => { this.canvas = el; }}
+            ref={el => { this.canvas = el; }}
             style={{
               display: "block",
               width: "100%",
@@ -295,7 +296,7 @@ export default class AnimateCC extends React.Component {
             }}
           />
           <div
-            ref={(el) => { this.domOverlayContainer = el; }}
+            ref={el => { this.domOverlayContainer = el; }}
             style={{
               pointerEvents: "none",
               overflow: "hidden",
