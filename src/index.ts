@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/extensions
-import AnimateCC from "./index.js";
+// export { default } from "./components/AnimateCC";
 
-export default AnimateCC;
+export { default } from "./index.js";

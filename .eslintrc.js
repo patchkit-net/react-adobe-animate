@@ -27,7 +27,7 @@ module.exports = {
     "react/no-did-mount-set-state": 0,
     "no-sequences": 0,
     "react/static-property-placement": [1, "static public field"],
-
+    "react/state-in-constructor": 0,
     "eol-last": ["error", "always"],
     "no-return-assign": 0,
     "function-paren-newline": 0,
