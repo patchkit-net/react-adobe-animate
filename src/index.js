@@ -174,8 +174,15 @@ export default class AnimateCC extends React.Component {
       const queue = evt.target;
       const { ssMetadata } = lib;
       for (let i = 0; i < ssMetadata.length; i++) {
+        const images = [queue.getResult(ssMetadata[i].name)];
+
+        if (!images[0]) {
+
+          return;
+        }
+
         ss[ssMetadata[i].name] = new CreateJs.SpriteSheet({
-          images: [queue.getResult(ssMetadata[i].name)],
+          images: images,
           frames: ssMetadata[i].frames,
         });
       }
